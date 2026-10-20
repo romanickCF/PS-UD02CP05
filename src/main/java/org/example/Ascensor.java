@@ -5,15 +5,18 @@ import java.util.LinkedList;
 public class Ascensor extends Thread{
 
     static final int NUMERO_PISOS = 4;
-    boolean hayUsuario;
-    int numPisos;
-    int piso;
+    private boolean hayUsuario;
+    private int piso;
+    private int totalUsuarios;
+    private int atendidos = 0;
+
+
     LinkedList<Usuario> usuariosPendientes = new LinkedList<>();
 
-    public Ascensor(){
+    public Ascensor(int totalUsuarios){
         this.hayUsuario = false;
-        this.numPisos = NUMERO_PISOS;
         this.piso = 0;
+        this.totalUsuarios = totalUsuarios;
     }
 
 
@@ -31,7 +34,7 @@ public class Ascensor extends Thread{
                 throw new RuntimeException(e);
             }
         }
-        moverAscensor(u);
+
         System.out.println(u.getNombre() +" sube al ascensor.");
         hayUsuario = true;
         notifyAll();
@@ -45,41 +48,47 @@ public class Ascensor extends Thread{
                 throw new RuntimeException(e);
             }
         }
-        moverAscensor(u);
+
         System.out.println(u.getNombre() +" se baja en el piso "+ u.getPisoElegido());
         hayUsuario=false;
         usuariosPendientes.remove(u);
         notifyAll();
     }
 
-    private void moverAscensor(Usuario u) {
-        int pisoObjetivo;
-
-        if(hayUsuario){
-            pisoObjetivo = u.getPisoElegido();
-        }
-        else{
-            pisoObjetivo = u.getPisoActual();
-        }
-
-        boolean esPositivo = (pisoObjetivo-piso) > 0;
-
-        while(piso!=pisoObjetivo) {
-            if (esPositivo) {
-                System.out.println("Ascensor subiendo a piso " + (piso + 1));
-                piso++;
-            } else {
-                System.out.println("Ascensor bajando a piso " + (piso - 1));
-                piso--;
-            }
-
-        }
-
-    }
-
 
     @Override
     public void run() {
 
+    }
+
+    private synchronized boolean atender() throws InterruptedException {
+        while(usuariosPendientes.isEmpty() && atendidos < totalUsuarios){
+            wait();
+        }
+        if(atendidos == totalUsuarios){
+            return false;
+        }
+        Usuario u = usuariosPendientes.getFirst();
+        int objetivo = hayUsuario ? u.getPisoElegido() : u.getPisoActual();
+
+        if (piso == objetivo) {
+            wait();
+        } else {
+            piso += (objetivo > piso) ? 1 : -1;
+            System.out.println("Ascensor en piso " + piso);
+            notifyAll();
+        }
+        return true;
+    }
+
+
+    private synchronized boolean bajarSolo() {
+        if (piso > -1) {
+            piso--;
+            System.out.println("Ascensor en piso " + piso);
+            notifyAll();
+            return true;
+        }
+        return false;
     }
 }

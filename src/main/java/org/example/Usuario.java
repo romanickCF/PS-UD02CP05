@@ -5,6 +5,7 @@ import java.util.Random;
 import static org.example.Ascensor.NUMERO_PISOS;
 
 public class Usuario extends Thread {
+
     String nombre;
     int pisoActual;
     int pisoElegido;
