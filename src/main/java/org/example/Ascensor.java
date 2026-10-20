@@ -8,7 +8,7 @@ public class Ascensor extends Thread{
     private boolean hayUsuario;
     private int piso;
     private final int totalUsuarios;
-    private final int atendidos = 0;
+    private int atendidos = 0;
 
 
     LinkedList<Usuario> usuariosPendientes = new LinkedList<>();
@@ -27,7 +27,7 @@ public class Ascensor extends Thread{
     }
 
     public synchronized void subirUsuario(Usuario u) {
-        while (hayUsuario || piso != u.getPisoActual() || usuariosPendientes.getFirst() != u){
+        while (hayUsuario){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -52,6 +52,7 @@ public class Ascensor extends Thread{
         System.out.println(u.getNombre() +" se baja en el piso "+ u.getPisoElegido());
         hayUsuario=false;
         usuariosPendientes.remove(u);
+        atendidos++;
         notifyAll();
     }
 
