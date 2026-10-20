@@ -3,15 +3,28 @@ package org.example;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+    static void main() throws InterruptedException {
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+        Ascensor asc = new Ascensor();
+
+        Usuario u1 = new Usuario("usuario 1",asc);
+        Usuario u2 = new Usuario("usuario 2",asc);
+        Usuario u3 = new Usuario("usuario 3",asc);
+        Usuario u4 = new Usuario("usuario 4",asc);
+
+        u1.start();
+        u2.start();
+        u3.start();
+        u4.start();
+        asc.start();
+
+        u1.join();
+        u2.join();
+        u3.join();
+        u4.join();
+        asc.join();
+
+
+
     }
 }
