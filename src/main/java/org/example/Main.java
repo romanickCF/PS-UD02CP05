@@ -4,25 +4,45 @@ package org.example;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static void main() throws InterruptedException {
+//
+//        Ascensor asc = new Ascensor();
+//
+//        Usuario u1 = new Usuario("usuario 1",asc);
+//        Usuario u2 = new Usuario("usuario 2",asc);
+//        Usuario u3 = new Usuario("usuario 3",asc);
+//        Usuario u4 = new Usuario("usuario 4",asc);
+//
+//        u1.start();
+//        u2.start();
+//        u3.start();
+//        u4.start();
+//        asc.start();
+//
+//        u1.join();
+//        u2.join();
+//        u3.join();
+//        u4.join();
+//        asc.join();
 
-        Ascensor asc = new Ascensor();
+        int piso = 8;
+        int pisoElegido = 0;
 
-        Usuario u1 = new Usuario("usuario 1",asc);
-        Usuario u2 = new Usuario("usuario 2",asc);
-        Usuario u3 = new Usuario("usuario 3",asc);
-        Usuario u4 = new Usuario("usuario 4",asc);
+            boolean esPositivo = (pisoElegido-piso) > 0;
 
-        u1.start();
-        u2.start();
-        u3.start();
-        u4.start();
-        asc.start();
+            while(piso!=pisoElegido) {
+                if (esPositivo) {
+                    System.out.println("Subiendo a piso " + (piso + 1));
+                    piso++;
+                } else {
+                    System.out.println("Bajando a piso " + (piso - 1));
+                    piso--;
+                }
 
-        u1.join();
-        u2.join();
-        u3.join();
-        u4.join();
-        asc.join();
+            }
+
+        System.out.println("El piso es " + piso);
+
+
 
 
 
