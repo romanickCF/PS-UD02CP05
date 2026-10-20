@@ -8,7 +8,7 @@ public class Usuario extends Thread {
     String nombre;
     int pisoActual;
     int pisoElegido;
-    Ascensor asc = new Ascensor();
+    Ascensor asc;
 
 
     public Usuario(String nombre, Ascensor asc){
@@ -63,13 +63,11 @@ public class Usuario extends Thread {
 
     @Override
     public void run() {
+        asc.registrar(this);      // fase 1: me pongo en la cola
+        asc.subirUsuario(this);   // fase 2: espero mi turno y entro
+        asc.bajarUsuario(this);   // fase 3: espero mi destino y salgo
+    }
+
 
     }
 
-    synchronized void subirAsc() throws InterruptedException {
-        while(asc.usuario){
-            wait();
-        }
-
-    }
-}

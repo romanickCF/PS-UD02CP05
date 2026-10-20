@@ -5,42 +5,51 @@ import java.util.LinkedList;
 public class Ascensor extends Thread{
 
     static final int NUMERO_PISOS = 4;
-    boolean usuario;
-    int numPisos = NUMERO_PISOS;
-    int piso;
-    LinkedList<Usuario> usuariosPendientes = new LinkedList<Usuario>();
+    boolean hayUsuario;
+    int numPisos;
+    LinkedList<Usuario> usuariosPendientes = new LinkedList<>();
 
     public Ascensor(){
-        this.usuario = false;
+        this.hayUsuario = false;
         this.numPisos = NUMERO_PISOS;
     }
 
-   public synchronized void subirPisos(){
 
-        while(!usuario && usuariosPendientes != null){
-            for(Usuario u : usuariosPendientes){
-                piso = u.pisoActual;
-                System.out.println("El ascensor llega al piso " + piso);
-                usuario = true;
-                System.out.println("El usuario "+ u.nombre + " sube al ascensor");
-                piso = u.pisoElegido;
-                System.out.println("El ascensor llega al piso " + piso);
-                usuariosPendientes.remove(u);
-                System.out.println("El usuario "+ u.nombre + " baja de el ascensor");
-                notifyAll();
+    public synchronized void registrar(Usuario u) {
+        System.out.println(u.getNombre()+" espera en el piso "+ u.getPisoActual());
+        usuariosPendientes.add(u);
+        notifyAll();
+    }
+
+    public synchronized void subirUsuario(Usuario u) {
+        while (hayUsuario){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
         }
+        System.out.println(u.getNombre() +" sube al ascensor.");
+        hayUsuario = true;
+        notifyAll();
+    }
 
-   }
-
-    public synchronized void registrar(Usuario u) { }
-    public synchronized void subirUsuario(Usuario u) { }
-    public synchronized void bajarUsuario(Usuario u) { }
+    public synchronized void bajarUsuario(Usuario u) {
+        while(!hayUsuario){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println(u.getNombre() +" se baja en el piso "+ u.getPisoElegido());
+        hayUsuario=false;
+        notifyAll();
+    }
 
 
     @Override
     public void run() {
-        subirPisos();
+
     }
 }
