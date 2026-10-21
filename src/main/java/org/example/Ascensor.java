@@ -27,7 +27,7 @@ public class Ascensor extends Thread{
     }
 
     public synchronized void subirUsuario(Usuario u) {
-        while (hayUsuario){
+        while (hayUsuario || piso != u.getPisoActual() ||!u.equals(usuariosPendientes.getFirst())) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -41,7 +41,7 @@ public class Ascensor extends Thread{
     }
 
     public synchronized void bajarUsuario(Usuario u) {
-        while(!hayUsuario){
+        while(!hayUsuario || piso != u.getPisoElegido() ||!u.equals(usuariosPendientes.getFirst())) {
             try {
                 wait();
             } catch (InterruptedException e) {
