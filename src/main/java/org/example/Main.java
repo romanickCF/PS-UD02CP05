@@ -6,25 +6,21 @@ public class Main {
     static void main() throws InterruptedException {
 
         Ascensor asc = new Ascensor(4);
-
-        Usuario u1 = new Usuario("usuario 1",asc);
-        Usuario u2 = new Usuario("usuario 2",asc);
-        Usuario u3 = new Usuario("usuario 3",asc);
-        Usuario u4 = new Usuario("usuario 4",asc);
-
-
+        Usuario[] usuarios = {
+            new Usuario("usuario 1",asc),
+            new Usuario("usuario 2",asc),
+            new Usuario("usuario 3",asc),
+            new Usuario("usuario 4",asc)
+        };
 
         asc.start();
-        u1.start();
-        u2.start();
-        u3.start();
-        u4.start();
-
+        for (Usuario u: usuarios){
+            u.start();
+        }
         asc.join();
-        u1.join();
-        u2.join();
-        u3.join();
-        u4.join();
+        for (Usuario u: usuarios){
+            u.join();
+        }
 
 
 
