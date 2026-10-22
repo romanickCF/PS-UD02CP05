@@ -20,12 +20,12 @@ public class Main {
         u3.start();
         u4.start();
 
-
+        asc.join();
         u1.join();
         u2.join();
         u3.join();
         u4.join();
-        asc.join();
+
 
 
     }

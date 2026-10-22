@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Ascensor extends Thread{
 
-    static final int NUMERO_PISOS = 4;
+    static final int NUMERO_PISOS = 6;
     private boolean hayUsuario;
     private int piso;
     private final int totalUsuarios;
