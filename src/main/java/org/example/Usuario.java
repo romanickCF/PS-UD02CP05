@@ -57,7 +57,7 @@ public class Usuario extends Thread {
         this.asc = asc;
     }
 
-    public int generarPisoAleatorio(){
+    private int generarPisoAleatorio(){
         Random rand = new Random();
         return rand.nextInt(NUMERO_PISOS);
     }
